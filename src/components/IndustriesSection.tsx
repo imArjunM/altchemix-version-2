@@ -1,18 +1,19 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   ArrowRight,
   Package,
-  Pipette,
   Cable,
   Shirt,
   Heart,
   Home,
   Cog,
+  Tractor,
+  Car,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+/* ================= CONTENT ================= */
 
 const industries = [
   {
@@ -21,113 +22,115 @@ const industries = [
     title: 'Packaging',
     subtitle: 'Food & Consumer Goods',
     description:
-      'High-performance masterbatches for flexible and rigid packaging applications. Our solutions ensure food safety compliance, UV protection, and brand-perfect color consistency across millions of units.',
+      'Enhancing visual appeal, regulatory compliance, barrier performance, and processing efficiency—while supporting recyclability and sustainability goals.',
     applications: [
-      'Food containers',
-      'Beverage bottles',
+      'Food packaging',
       'Flexible films',
+      'Rigid containers',
       'Caps & closures',
     ],
     image:
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-  },
-  {
-    id: 'pipes',
-    icon: Pipette,
-    title: 'Pipes & Agriculture',
-    subtitle: 'Infrastructure Solutions',
-    description:
-      'Engineered additives for agricultural films, irrigation systems, and infrastructure pipes. Weather-resistant formulations that extend product life in harsh outdoor conditions.',
-    applications: [
-      'PE/PP pipes',
-      'Drip irrigation',
-      'Mulch films',
-      'Greenhouse covers',
-    ],
-    image:
-      'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&fit=crop',
   },
   {
     id: 'wire-cable',
     icon: Cable,
-    title: 'Wire & Cable',
-    subtitle: 'Electrical Applications',
+    title: 'Wires & Cables',
+    subtitle: 'Electrical Infrastructure',
     description:
-      'Flame-retardant and UV-stabilized masterbatches for electrical insulation. Meeting stringent fire safety standards while maintaining excellent processability.',
+      'Masterbatches engineered for superior insulation, durability, and electrical performance in demanding operating environments.',
     applications: [
-      'Building wire',
-      'Automotive cables',
+      'Power cables',
       'Telecom cables',
-      'Industrial wiring',
+      'Automotive wiring',
+      'Industrial cables',
     ],
     image:
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&fit=crop',
   },
   {
-    id: 'fibres',
+    id: 'textiles',
     icon: Shirt,
-    title: 'Fibres & Textiles',
-    subtitle: 'Technical Textiles',
+    title: 'Textiles & Fibres',
+    subtitle: 'Fashion & Technical Textiles',
     description:
-      'Specialized masterbatches for synthetic fiber production. Antimicrobial, UV-resistant, and color-fast solutions for apparel and technical textile applications.',
+      'Color-stable solutions with controlled migration and consistent fibre performance for fashion and technical applications.',
     applications: [
-      'Carpet fibers',
+      'Synthetic fibres',
       'Nonwovens',
       'Technical textiles',
-      'Sportswear',
+      'Performance apparel',
     ],
     image:
-      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1200&fit=crop',
   },
   {
-    id: 'healthcare',
-    icon: Heart,
-    title: 'Healthcare',
-    subtitle: 'Medical & Pharmaceutical',
+    id: 'agriculture',
+    icon: Tractor,
+    title: 'Agriculture',
+    subtitle: 'Films, Pipes & Nets',
     description:
-      'FDA-compliant and biocompatible masterbatches for medical devices and pharmaceutical packaging. Antimicrobial solutions that meet the strictest regulatory requirements.',
+      'UV-stable formulations for agricultural films, pipes, nets, and greenhouse applications—designed to withstand harsh conditions and extend product life.',
     applications: [
-      'Medical devices',
-      'Pharma packaging',
-      'Diagnostic equipment',
-      'Hospital consumables',
+      'Greenhouse films',
+      'Mulch films',
+      'Irrigation pipes',
+      'Agro nets',
     ],
     image:
-      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&fit=crop',
   },
   {
     id: 'appliances',
     icon: Home,
     title: 'Appliances',
-    subtitle: 'Consumer Electronics',
+    subtitle: 'Consumer Durables',
     description:
-      'Premium color and performance solutions for household appliances. Scratch-resistant, UV-stable formulations that maintain aesthetics throughout product life.',
+      'High-performance aesthetics combined with scratch resistance, thermal stability, and long-lasting durability for household appliances.',
     applications: [
       'White goods',
       'Small appliances',
-      'Electronics housings',
+      'Electronic housings',
       'HVAC components',
     ],
     image:
-      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&fit=crop',
   },
   {
-    id: 'custom',
-    icon: Cog,
-    title: 'Custom OEM',
-    subtitle: 'Tailored Solutions',
+    id: 'healthcare',
+    icon: Heart,
+    title: 'Healthcare',
+    subtitle: 'Medical Applications',
     description:
-      'Bespoke masterbatch development for unique applications. Our technical team works alongside your R&D to create proprietary formulations that give you a competitive edge.',
+      'Medical-grade solutions developed to meet global safety, hygiene, and regulatory compliance standards for critical healthcare applications.',
     applications: [
-      'Automotive parts',
-      'Industrial components',
-      'Specialty applications',
-      'R&D projects',
+      'Medical devices',
+      'Pharma packaging',
+      'Diagnostic equipment',
+      'Healthcare disposables',
     ],
     image:
-      'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&fit=crop',
+  },
+  {
+    id: 'automotive',
+    icon: Car,
+    title: 'Automotive',
+    subtitle: 'Interior & Exterior Systems',
+    description:
+      'Advanced masterbatch and additive solutions delivering superior aesthetics, thermal stability, UV resistance, and functional performance—while supporting lightweighting and sustainability goals.',
+    applications: [
+      'Interior trims',
+      'Exterior components',
+      'Under-the-hood parts',
+      'EV components',
+    ],
+    image:
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&fit=crop',
   },
 ];
+
+/* ================= SECTION ================= */
 
 export function IndustriesSection() {
   const [activeIndustry, setActiveIndustry] = useState(industries[0]);
@@ -135,46 +138,45 @@ export function IndustriesSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id='industries' className='py-32 relative overflow-hidden '>
+    <section id="industries" className="py-32 relative overflow-hidden">
       {/* Background */}
-      {/* Background */}
-      <div className='absolute inset-0 bg-gradient-to-br from-emerald-deep via-primary to-graphite' />
-      <div className='absolute inset-0 grid-overlay opacity-10' />
-      <div className='absolute inset-0 noise-overlay' />
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-deep via-primary to-graphite" />
+      <div className="absolute inset-0 grid-overlay opacity-10" />
+      <div className="absolute inset-0 noise-overlay" />
 
       {/* Glow effects */}
-      <div className='absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-teal/20 rounded-full blur-3xl' />
-      <div className='absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-emerald-light/10 rounded-full blur-3xl' />
+      <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-teal/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-emerald-light/10 rounded-full blur-3xl" />
 
-      <div className='container mx-auto px-6 lg:px-12 relative z-10'>
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
         {/* Header */}
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className='text-center mb-16'
+          className="text-center mb-16"
         >
-          <span className='inline-block text-sm font-semibold text-teal uppercase tracking-widest mb-4'>
+          <span className="inline-block text-sm font-semibold text-teal uppercase tracking-widest mb-4">
             Industries We Serve
           </span>
-          <h2 className='text-4xl md:text-5xl font-bold text-primary-foreground mb-6'>
-            Tailored Solutions for Every Sector
+          <h2 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-6">
+            Tailored Solutions Across Industries
           </h2>
-          <p className='text-xl text-stone max-w-3xl mx-auto'>
-            From packaging to healthcare, our masterbatches power products
-            across diverse industries with precision-engineered performance.
+          <p className="text-xl text-stone max-w-3xl mx-auto">
+            Our masterbatch and additive technologies support diverse sectors
+            with performance, compliance, and sustainability at their core.
           </p>
         </motion.div>
 
-        {/* Industry Selector - Avient Style */}
-        <div className='grid lg:grid-cols-12 gap-8 items-start'>
+        {/* Selector Layout */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
           {/* Left Menu */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className='lg:col-span-4 space-y-1'
+            className="lg:col-span-4 space-y-1"
           >
             {industries.map((industry) => (
               <button
@@ -187,7 +189,7 @@ export function IndustriesSection() {
                 }`}
               >
                 <industry.icon
-                  className={`w-5 h-5 transition-colors ${
+                  className={`w-5 h-5 ${
                     activeIndustry.id === industry.id
                       ? 'text-teal'
                       : 'text-stone group-hover:text-primary-foreground'
@@ -195,7 +197,7 @@ export function IndustriesSection() {
                 />
                 <div>
                   <span
-                    className={`block font-semibold transition-colors ${
+                    className={`block font-semibold ${
                       activeIndustry.id === industry.id
                         ? 'text-primary-foreground'
                         : 'text-stone group-hover:text-primary-foreground'
@@ -203,7 +205,7 @@ export function IndustriesSection() {
                   >
                     {industry.title}
                   </span>
-                  <span className='text-sm text-steel-light'>
+                  <span className="text-sm text-steel-light">
                     {industry.subtitle}
                   </span>
                 </div>
@@ -212,51 +214,51 @@ export function IndustriesSection() {
           </motion.div>
 
           {/* Right Content */}
-          <div className='lg:col-span-8'>
-            <AnimatePresence mode='wait'>
+          <div className="lg:col-span-8">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndustry.id}
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.4 }}
-                className='relative rounded-2xl overflow-hidden'
+                className="relative rounded-2xl overflow-hidden"
               >
                 {/* Image */}
-                <div className=' relative'>
+                <div className="relative">
                   <img
                     src={activeIndustry.image}
                     alt={activeIndustry.title}
-                    className='w-full h-full object-cover'
+                    className="w-full h-full object-cover"
                   />
-                  <div className='absolute inset-0 bg-gradient-to-t from-graphite via-graphite/60 to-transparent' />
+                  <div className="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/60 to-transparent" />
                 </div>
 
-                {/* Content Overlay */}
-                <div className='absolute bottom-0 left-0 right-0 p-8 lg:p-12'>
-                  <h3 className='text-3xl font-bold text-primary-foreground mb-3'>
-                    Why Materials Matter for {activeIndustry.title}
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                  <h3 className="text-3xl font-bold text-primary-foreground mb-3">
+                    {activeIndustry.title}
                   </h3>
-                  <p className='text-lg text-silver mb-6 max-w-2xl'>
+
+                  <p className="text-lg text-silver mb-6 max-w-2xl">
                     {activeIndustry.description}
                   </p>
 
-                  {/* Applications */}
-                  <div className='flex flex-wrap gap-2 mb-8'>
+                  <div className="flex flex-wrap gap-2 mb-8">
                     {activeIndustry.applications.map((app) => (
                       <span
                         key={app}
-                        className='px-3 py-1 rounded-full bg-primary-foreground/10 text-sm text-silver border border-primary-foreground/20'
+                        className="px-3 py-1 rounded-full bg-primary-foreground/10 text-sm text-silver border border-primary-foreground/20"
                       >
                         {app}
                       </span>
                     ))}
                   </div>
 
-                  <Button variant='teal' size='lg' className='group'>
+                  <Button variant="teal" size="lg" className="group">
                     Explore Solutions
                     <ArrowRight
-                      className='ml-2 group-hover:translate-x-1 transition-transform'
+                      className="ml-2 group-hover:translate-x-1 transition-transform"
                       size={18}
                     />
                   </Button>

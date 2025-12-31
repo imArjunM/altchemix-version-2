@@ -18,557 +18,259 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Import images for full-cover cards
+/* Images */
 import colorMasterbatch from '@/assets/color-masterbatch.jpg';
 import customSolutions from '@/assets/custom-solutions.jpg';
+
+/* ================= CONTENT ================= */
 
 const technologies = [
   {
     icon: Microscope,
-    title: 'Colour Matching',
+    title: 'Custom Colour Development',
     description:
-      'Advanced spectrophotometry for precise color formulation. We match any target within ΔE < 1.0.',
+      'Precision colour formulation using advanced spectrophotometry for fast, accurate brand matching.',
     stats: '10,000+',
-    statsLabel: 'Formulations',
+    statsLabel: 'Colour Recipes',
     type: 'featured',
     image: colorMasterbatch,
   },
   {
     icon: Beaker,
-    title: 'Application Testing',
-    description: 'Full-scale processing trials ensure real-world performance.',
+    title: 'Rapid Prototyping & Sampling',
+    description:
+      'Accelerated development cycles with quick-turn samples and pilot-scale validation.',
     type: 'compact',
   },
   {
     icon: Leaf,
-    title: 'Sustainable Solutions',
-    description: 'Bio-based and recyclable masterbatches for circular economy.',
+    title: 'Sustainability-Driven Solutions',
+    description:
+      'Eco-conscious formulations designed for recyclability and reduced environmental impact.',
     type: 'compact',
   },
   {
     icon: Factory,
-    title: 'Twin-Screw Extrusion',
+    title: 'Advanced Compounding Technology',
     description:
-      'State-of-the-art compounding with precision temperature control and superior dispersion.',
+      'Twin-screw extrusion systems delivering consistent dispersion, stability, and scalability.',
     stats: '99.9%',
-    statsLabel: 'Dispersion Rate',
+    statsLabel: 'Dispersion Consistency',
     type: 'featured',
     image: customSolutions,
   },
   {
     icon: Shield,
-    title: 'Quality Control',
+    title: 'Quality, Compliance & Innovation',
     description:
-      'Comprehensive testing: mechanical, thermal, spectral, and rheological analysis.',
+      'End-to-end support covering regulatory compliance, testing, and collaborative innovation.',
     badges: ['ISO 9001', 'ISO 14001', 'REACH'],
     type: 'wide',
   },
 ];
 
-// Featured Card with full image cover
-function FeaturedCard({
-  tech,
-  index,
-}: {
-  tech: (typeof technologies)[0];
-  index: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
+/* ================= FEATURED CARD ================= */
+
+function FeaturedCard({ tech, index }: any) {
+  const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 500, damping: 50 });
-  const mouseYSpring = useSpring(y, { stiffness: 500, damping: 50 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['8deg', '-8deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-8deg', '8deg']);
-  const brightness = useTransform(mouseXSpring, [-0.5, 0.5], [0.9, 1.1]);
+  const sx = useSpring(x, { stiffness: 400, damping: 40 });
+  const sy = useSpring(y, { stiffness: 400, damping: 40 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const rotateX = useTransform(sy, [-0.5, 0.5], ['6deg', '-6deg']);
+  const rotateY = useTransform(sx, [-0.5, 0.5], ['-6deg', '6deg']);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
+    const r = ref.current.getBoundingClientRect();
+    x.set((e.clientX - r.left) / r.width - 0.5);
+    y.set((e.clientY - r.top) / r.height - 0.5);
   };
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, rotateX: -15 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: [0.23, 1, 0.32, 1],
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      className='md:col-span-2 relative perspective-1000'
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, delay: index * 0.15 }}
+      onMouseMove={onMove}
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         x.set(0);
         y.set(0);
-        setIsHovered(false);
+        setHovered(false);
       }}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className='md:col-span-2 relative group cursor-pointer perspective-1000'
     >
-      <motion.div
-        className='relative h-80 rounded-3xl overflow-hidden'
-        animate={{ scale: isHovered ? 1.02 : 1 }}
-        transition={{ duration: 0.4 }}
-      >
-        {/* Background Image */}
+      <div className='relative h-80 rounded-3xl overflow-hidden'>
         <motion.img
           src={tech.image}
           alt={tech.title}
           className='absolute inset-0 w-full h-full object-cover'
-          style={{ filter: `brightness(${brightness})` } as any}
-          animate={{ scale: isHovered ? 1.1 : 1 }}
-          transition={{ duration: 0.7 }}
+          animate={{ scale: hovered ? 1.08 : 1 }}
+          transition={{ duration: 0.6 }}
         />
 
-        {/* Dark Gradient Overlay */}
-        <div className='absolute inset-0 bg-gradient-to-t from-graphite via-graphite/60 to-graphite/20' />
+        <div className='absolute inset-0 bg-gradient-to-t from-graphite via-graphite/60 to-transparent' />
 
-        {/* Light sweep */}
-        <motion.div
-          className='absolute inset-0 bg-gradient-to-r from-transparent via-teal/10 to-transparent'
-          initial={{ x: '-100%' }}
-          animate={{ x: isHovered ? '200%' : '-100%' }}
-          transition={{ duration: 0.7 }}
-        />
-
-        {/* Animated border glow */}
-        <motion.div
-          className='absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500'
-          style={{
-            background:
-              'linear-gradient(135deg, transparent 40%, hsl(var(--teal) / 0.3) 50%, transparent 60%)',
-            backgroundSize: '200% 200%',
-          }}
-          animate={
-            isHovered
-              ? {
-                  backgroundPosition: ['0% 0%', '100% 100%'],
-                }
-              : {}
-          }
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        />
-
-        {/* Particle effects */}
-        <AnimatePresence>
-          {isHovered && (
-            <>
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0, x: '50%', y: '50%' }}
-                  animate={{
-                    opacity: [0, 1, 0],
-                    scale: [0, 1.5, 0],
-                    x: `${50 + (Math.random() - 0.5) * 80}%`,
-                    y: `${50 + (Math.random() - 0.5) * 80}%`,
-                  }}
-                  transition={{ duration: 2, delay: i * 0.2, repeat: Infinity }}
-                  className='absolute w-1 h-1 rounded-full bg-teal'
-                />
-              ))}
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* Content */}
         <div className='absolute inset-0 p-8 flex flex-col justify-end'>
-          {/* Icon with pulse */}
-          <motion.div
-            className='w-16 h-16 rounded-2xl bg-white backdrop-blur-sm flex items-center justify-center mb-6 border border-teal/30'
-            animate={
-              isHovered
-                ? {
-                    boxShadow: [
-                      '0 0 0 0 hsl(var(--teal) / 0.4)',
-                      '0 0 0 15px hsl(var(--teal) / 0)',
-                      '0 0 0 0 hsl(var(--teal) / 0)',
-                    ],
-                  }
-                : {}
-            }
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <tech.icon className='w-8 h-8 text-teal' />
-          </motion.div>
-
-          <div className='flex items-end justify-between'>
-            <div className='flex-1'>
-              <motion.h3
-                className='text-3xl font-bold text-white mb-2'
-                animate={{ x: isHovered ? 10 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {tech.title}
-              </motion.h3>
-              <motion.p
-                className='text-gray-200 max-w-md'
-                initial={{ opacity: 0.8 }}
-                animate={{ opacity: isHovered ? 1 : 0.8 }}
-              >
-                {tech.description}
-              </motion.p>
-            </div>
-
-            {/* Stats */}
-            {tech.stats && (
-              <motion.div
-                className='text-right ml-4'
-                animate={{ scale: isHovered ? 1.1 : 1, y: isHovered ? -5 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className='text-4xl font-bold text-yellow-500'>{tech.stats}</div>
-                <div className='text-sm text-white'>
-                  {tech.statsLabel}
-                </div>
-              </motion.div>
-            )}
+          <div className='w-14 h-14 mb-5 rounded-xl glass flex items-center justify-center border border-teal/30'>
+            <tech.icon className='w-7 h-7 text-teal' />
           </div>
 
-          {/* Animated CTA */}
+          <div className='flex items-end justify-between gap-6'>
+            <div>
+              <h3 className='text-3xl font-bold text-white mb-2'>
+                {tech.title}
+              </h3>
+              <p className='text-gray-200 max-w-md'>{tech.description}</p>
+            </div>
+
+            <div className='text-right'>
+              <div className='text-4xl font-bold text-yellow-500'>
+                {tech.stats}
+              </div>
+              <div className='text-sm text-white'>{tech.statsLabel}</div>
+            </div>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-            transition={{ duration: 0.3 }}
             className='mt-6'
+            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
           >
-            <Button variant='glass' className='group/btn'>
-              Explore Technology
-              <motion.span
-                animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ArrowRight className='ml-2 w-4 h-4' />
-              </motion.span>
+            <Button variant='glass'>
+              Explore
+              <ArrowRight className='ml-2 w-4 h-4' />
             </Button>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
 
-// Compact Card with icon focus
-function CompactCard({
-  tech,
-  index,
-}: {
-  tech: (typeof technologies)[0];
-  index: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
+/* ================= COMPACT CARD ================= */
+
+function CompactCard({ tech, index }: any) {
+  const [hovered, setHovered] = useState(false);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className='relative group cursor-pointer'
-    >
-      <motion.div
-        className='glass-card rounded-2xl p-8 h-full relative overflow-hidden'
-        animate={{
-          y: isHovered ? -8 : 0,
-          boxShadow: isHovered
-            ? '0 25px 50px -12px hsl(var(--teal) / 0.25)'
-            : '0 0 0 0 transparent',
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        {/* Animated background gradient */}
-        <motion.div
-          className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500'
-          style={{
-            background:
-              'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), hsl(var(--teal) / 0.1) 0%, transparent 50%)',
-          }}
-        />
-
-        {/* Icon with animated ring */}
-        <div className='relative mb-6'>
-          <motion.div
-            className='w-14 h-14 rounded-xl bg-gradient-to-br from-teal/20 to-emerald-deep/10 flex items-center justify-center relative z-10'
-            animate={{
-              rotate: isHovered ? 360 : 0,
-              scale: isHovered ? 1.1 : 1,
-            }}
-            transition={{ duration: 0.6 }}
-          >
-            <tech.icon className='w-7 h-7 text-teal' />
-          </motion.div>
-
-          {/* Orbiting dot */}
-          <motion.div
-            className='absolute top-0 left-0 w-full h-full'
-            animate={{ rotate: isHovered ? 360 : 0 }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-          >
-            <motion.div
-              className='absolute -top-1 left-1/2 w-2 h-2 rounded-full bg-teal'
-              animate={{ opacity: isHovered ? 1 : 0 }}
-            />
-          </motion.div>
-        </div>
-
-        <motion.h3
-          className='text-xl font-bold text-foreground mb-3'
-          animate={{ x: isHovered ? 5 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {tech.title}
-        </motion.h3>
-
-        <motion.p
-          className='text-muted-foreground leading-relaxed mb-6'
-          animate={{ opacity: isHovered ? 1 : 0.7 }}
-        >
-          {tech.description}
-        </motion.p>
-
-        {/* Animated underline */}
-        <motion.div
-          className='h-0.5 bg-gradient-to-r from-teal to-emerald-deep rounded-full'
-          initial={{ width: 0 }}
-          animate={{ width: isHovered ? '100%' : 0 }}
-          transition={{ duration: 0.4 }}
-        />
-
-        {/* Floating arrow */}
-        <motion.div
-          className='absolute bottom-6 right-6'
-          animate={{
-            x: isHovered ? 0 : -10,
-            opacity: isHovered ? 1 : 0,
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          <ArrowRight className='w-5 h-5 text-teal' />
-        </motion.div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// Wide Card with badges
-function WideCard({
-  tech,
-  index,
-}: {
-  tech: (typeof technologies)[0];
-  index: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className='md:col-span-3 relative group cursor-pointer'
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className='glass-card rounded-2xl p-8 relative'
     >
+      <div className='w-12 h-12 rounded-xl bg-teal/15 flex items-center justify-center mb-5'>
+        <tech.icon className='w-6 h-6 text-teal' />
+      </div>
+
+      <h3 className='text-xl font-semibold mb-3'>{tech.title}</h3>
+
+      <p className='text-muted-foreground leading-relaxed'>
+        {tech.description}
+      </p>
+
       <motion.div
-        className='glass-card rounded-2xl p-8 relative overflow-hidden'
-        animate={{
-          y: isHovered ? -5 : 0,
-        }}
-        transition={{ duration: 0.3 }}
+        className='absolute bottom-6 right-6'
+        animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -10 }}
       >
-        {/* Cursor spotlight */}
-        <motion.div
-          className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'
-          style={{
-            background: `radial-gradient(600px circle at ${mouseX.get()}px ${mouseY.get()}px, hsl(var(--teal) / 0.06), transparent 40%)`,
-          }}
-        />
-
-        {/* Blueprint grid lines */}
-        <div className='absolute inset-0 opacity-20'>
-          <div className='absolute inset-0 grid-overlay' />
-          <motion.div
-            className='absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-teal to-transparent'
-            animate={{ x: isHovered ? '100%' : '-100%' }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </div>
-
-        <div className='relative z-10 flex flex-col md:flex-row md:items-center gap-6'>
-          {/* Icon */}
-          <motion.div
-            className='w-20 h-20 rounded-2xl bg-gradient-to-br from-teal/20 to-emerald-deep/10 flex items-center justify-center flex-shrink-0 border border-teal/20'
-            animate={{
-              scale: isHovered ? 1.1 : 1,
-              rotate: isHovered ? 5 : 0,
-            }}
-            transition={{ duration: 0.4 }}
-          >
-            <tech.icon className='w-10 h-10 text-teal' />
-          </motion.div>
-
-          {/* Content */}
-          <div className='flex-1'>
-            <motion.h3
-              className='text-2xl font-bold text-foreground mb-2'
-              animate={{ x: isHovered ? 5 : 0 }}
-            >
-              {tech.title}
-            </motion.h3>
-            <p className='text-muted-foreground mb-4'>{tech.description}</p>
-
-            {/* Animated badges */}
-            <div className='flex flex-wrap gap-3'>
-              {tech.badges?.map((badge, i) => (
-                <motion.div
-                  key={badge}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.1 + 0.3 }}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className='px-4 py-2 rounded-full bg-teal/10 text-teal text-sm font-medium border border-teal/20 backdrop-blur-sm'
-                >
-                  <motion.span
-                    animate={{ opacity: isHovered ? 1 : 0.8 }}
-                    className='flex items-center gap-2'
-                  >
-                    <Sparkles className='w-3 h-3' />
-                    {badge}
-                  </motion.span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Animated CTA */}
-          <motion.div
-            animate={{ x: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Button variant='teal' className='group/btn whitespace-nowrap'>
-              View Certifications
-              <ArrowRight className='ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform' />
-            </Button>
-          </motion.div>
-        </div>
+        <ArrowRight className='text-teal' />
       </motion.div>
     </motion.div>
   );
 }
+
+/* ================= WIDE CARD ================= */
+
+function WideCard({ tech, index }: any) {
+  return (
+    <motion.div
+      className='md:col-span-3 glass-card rounded-2xl p-8'
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+    >
+      <div className='flex flex-col md:flex-row items-start md:items-center gap-6'>
+        <div className='w-16 h-16 rounded-xl bg-teal/15 flex items-center justify-center'>
+          <tech.icon className='w-8 h-8 text-teal' />
+        </div>
+
+        <div className='flex-1'>
+          <h3 className='text-2xl font-bold mb-2'>{tech.title}</h3>
+          <p className='text-muted-foreground mb-4'>{tech.description}</p>
+
+          <div className='flex gap-3 flex-wrap'>
+            {tech.badges.map((b: string) => (
+              <span
+                key={b}
+                className='px-4 py-2 rounded-full bg-teal/10 text-teal text-sm font-medium border border-teal/20'
+              >
+                <Sparkles className='inline w-3 h-3 mr-1' />
+                {b}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <Button variant='teal'>
+          View Certifications
+          <ArrowRight className='ml-2 w-4 h-4' />
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ================= SECTION ================= */
 
 export function TechnologySection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section
-      id='technology'
-      className='pb-32 relative overflow-hidden '
-    >
-      {/* Animated background */}
+    <section id='technology' className='py-24 relative overflow-hidden'>
       <div className='absolute inset-0 grid-overlay opacity-30' />
-      <motion.div
-        className='absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-teal/5 to-transparent rounded-full blur-3xl'
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
-      <motion.div
-        className='absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-emerald-deep/5 to-transparent rounded-full blur-3xl'
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{ duration: 10, repeat: Infinity }}
-      />
 
       <div className='container mx-auto px-6 lg:px-12 relative z-10'>
-        {/* Header with staggered animation */}
+        {/* Header */}
         <motion.div
           ref={ref}
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
+          animate={inView ? { opacity: 1 } : {}}
           className='text-center mb-16'
         >
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className='inline-block text-sm font-semibold text-teal uppercase tracking-widest mb-4'
-          >
-            Innovation & Technology
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className='text-4xl md:text-5xl font-bold text-foreground mb-6'
-          >
-            R&D Excellence
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className='text-xl text-muted-foreground max-w-3xl mx-auto'
-          >
-            Our commitment to innovation drives continuous advancement in
-            polymer technology and processing capabilities.
-          </motion.p>
+          <span className='inline-block text-sm font-semibold text-teal uppercase tracking-widest mb-4'>
+            Services & Innovation
+          </span>
+          <h2 className='text-4xl md:text-5xl font-bold mb-6'>
+            Expertise That Drives Progress
+          </h2>
+          <p className='text-xl text-muted-foreground max-w-3xl mx-auto'>
+            We combine advanced manufacturing, material science expertise, and
+            sustainability-driven innovation to deliver high-performance polymer
+            solutions worldwide.
+          </p>
         </motion.div>
 
-        {/* Bento Grid - 5 cards with unique designs */}
+        {/* Grid */}
         <div className='grid md:grid-cols-3 gap-6'>
-          {/* Row 1: Featured card (2 cols) + Compact card */}
           <FeaturedCard tech={technologies[0]} index={0} />
           <CompactCard tech={technologies[1]} index={1} />
-
-          {/* Row 2: Compact card + Featured card (2 cols) */}
           <CompactCard tech={technologies[2]} index={2} />
           <FeaturedCard tech={technologies[3]} index={3} />
-
-          {/* Row 3: Wide card spanning all 3 columns */}
           <WideCard tech={technologies[4]} index={4} />
         </div>
       </div>
-
-      {/* Blueprint line */}
-      <motion.div
-        className='absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal/30 to-transparent'
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5 }}
-      />
     </section>
   );
 }

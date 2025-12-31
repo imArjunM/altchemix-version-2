@@ -1,43 +1,54 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 import { useRef } from 'react';
-import { Award, Globe, FlaskConical, Users } from 'lucide-react';
+import { Palette, Award, Recycle, Wrench, ArrowRight } from 'lucide-react';
+import { Button } from './ui/button';
 
-const stats = [
-  { icon: Globe, value: '50+', label: 'Countries Served' },
-  { icon: FlaskConical, value: '1000+', label: 'Custom Formulations' },
-  { icon: Award, value: '25+', label: 'Years of Excellence' },
-  { icon: Users, value: '500+', label: 'Industry Partners' },
+const features = [
+  {
+    icon: Palette,
+    title: 'Custom Color & Fast Turnaround',
+    text: 'Precision-matched solutions delivered with speed and consistency.',
+  },
+  {
+    icon: Award,
+    title: 'Certified Premium Quality',
+    text: 'Global standards ensuring reliability across every application.',
+  },
+  {
+    icon: Recycle,
+    title: 'Sustainable Additive Systems',
+    text: 'Eco-ready formulations supporting circular plastic ecosystems.',
+  },
+  {
+    icon: Wrench,
+    title: 'Technical & Application Expertise',
+    text: 'Hands-on support to optimize processing and performance.',
+  },
 ];
 
-const containerVariants = {
+const container: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut' as const,
-    },
+    transition: { duration: 0.6, ease: 'easeOut' },
   },
 };
 
 export function AboutSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-120px' });
 
   return (
-    <section id='about' className='py-32 relative overflow-hidden'>
+    <section id='about' className='relative py-28 overflow-hidden'>
       {/* Background */}
       <div className='absolute inset-0 bg-muted/30' />
       <div className='absolute inset-0 grid-overlay opacity-30' />
@@ -45,81 +56,73 @@ export function AboutSection() {
       <div className='container mx-auto px-6 lg:px-12 relative z-10'>
         <motion.div
           ref={ref}
-          variants={containerVariants}
+          variants={container}
           initial='hidden'
           animate={isInView ? 'visible' : 'hidden'}
-          className='grid lg:grid-cols-2 gap-16 items-center'
+          className='grid lg:grid-cols-[1fr_2fr] gap-16 items-center'
         >
-          {/* Content */}
+          {/* LEFT — Core Message */}
           <div>
             <motion.span
-              variants={itemVariants}
-              className='inline-block text-sm font-semibold text-teal uppercase tracking-widest mb-4'
+              variants={fadeUp}
+              className='inline-block text-sm font-semibold uppercase tracking-widest text-teal mb-4'
             >
-              About Altchemix
+              About Us
             </motion.span>
 
             <motion.h2
-              variants={itemVariants}
-              className='text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight'
+              variants={fadeUp}
+              className='text-4xl md:text-4xl font-bold leading-tight mb-6'
             >
-              Engineering the Future of
-              <span className='gradient-text'> Polymer Performance</span>
+              Engineering Advanced
+              <span className='gradient-text'> Polymer Solutions</span>
             </motion.h2>
 
             <motion.p
-              variants={itemVariants}
-              className='text-lg text-muted-foreground leading-relaxed mb-6'
+              variants={fadeUp}
+              className='text-lg text-muted-foreground leading-relaxed max-w-xl'
             >
-              For over two decades, Altchemix has been at the forefront of
-              masterbatch innovation. Our state-of-the-art facilities, equipped
-              with advanced twin-screw extrusion technology, deliver
-              unparalleled precision in color matching and additive dispersion.
+              We combine advanced manufacturing, material science expertise, and
+              sustainable innovation to deliver premium masterbatch and additive
+              solutions for demanding global industries.
             </motion.p>
 
-            {/* Feature list */}
-            <motion.div variants={itemVariants} className='space-y-4'>
-              {[
-                'Advanced twin-screw extrusion precision',
-                'Global quality certifications & compliance',
-                'Sustainable & eco-ready formulations',
-              ].map((feature, index) => (
-                <div key={index} className='flex items-center gap-3'>
-                  <div className='w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center'>
-                    <div className='w-2 h-2 rounded-full bg-teal' />
-                  </div>
-                  <span className='text-foreground font-medium'>{feature}</span>
-                </div>
-              ))}
-            </motion.div>
+            <div className='mt-10'>
+              <Button variant='hero' size='xl' className='group'>
+                Know More
+                <ArrowRight
+                  className='ml-2 group-hover:translate-x-1 transition-transform'
+                  size={18}
+                />
+              </Button>
+            </div>
           </div>
 
-          {/* Stats Grid */}
+          {/* RIGHT — Value Grid */}
           <motion.div
-            variants={itemVariants}
-            className='grid grid-cols-2 gap-6'
+            variants={container}
+            className='grid sm:grid-cols-2 gap-6'
           >
-            {stats.map((stat) => (
+            {features.map((item) => (
               <motion.div
-                key={stat.label}
-                className='glass-card rounded-2xl p-8 text-center group hover:shadow-elevated transition-all duration-500 light-sweep'
-                whileHover={{ y: -5, scale: 1.02 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                key={item.title}
+                variants={fadeUp}
+                whileHover={{ y: -4 }}
+                transition={{ type: 'spring', stiffness: 280 }}
+                className='glass-card rounded-2xl p-7 group hover:shadow-elevated transition-all duration-500'
               >
-                <stat.icon className='w-10 h-10 mx-auto mb-4 text-teal group-hover:scale-110 transition-transform' />
-                <div className='text-4xl font-bold text-foreground mb-2'>
-                  {stat.value}
-                </div>
-                <div className='text-sm text-muted-foreground font-medium'>
-                  {stat.label}
-                </div>
+                <item.icon className='w-8 h-8 text-teal mb-4 group-hover:scale-110 transition-transform' />
+                <h4 className='text-base font-semibold mb-2'>{item.title}</h4>
+                <p className='text-sm text-muted-foreground leading-relaxed'>
+                  {item.text}
+                </p>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Decorative line */}
+      {/* Bottom Blueprint Line */}
       <div className='absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px blueprint-line' />
     </section>
   );
