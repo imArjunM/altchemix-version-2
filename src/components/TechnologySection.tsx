@@ -64,7 +64,7 @@ const technologies = [
     title: 'Quality, Compliance & Innovation',
     description:
       'End-to-end support covering regulatory compliance, testing, and collaborative innovation.',
-    badges: ['ISO 9001', 'ISO 14001', 'REACH'],
+    badges: ['ISO 9001', 'REACH'],
     type: 'wide',
   },
 ];

@@ -32,7 +32,6 @@ const footerLinks = {
 
 const certifications = [
   'ISO 9001',
-  'ISO 14001',
   'REACH',
   'RoHS',
   'FDA',
