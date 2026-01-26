@@ -209,11 +209,11 @@ export function IndustriesSection() {
                 className='relative rounded-2xl overflow-hidden'
               >
                 {/* Image */}
-                <div className='relative w-full h-[420px] lg:h-[520px]'>
+                <div className='relative'>
                   <img
                     src={activeIndustry.image}
                     alt={activeIndustry.title}
-                    className='absolute inset-0 w-full h-full object-cover'
+                    className='w-full h-full min-h-80 object-cover'
                   />
                   <div className='absolute inset-0 bg-gradient-to-t from-graphite via-graphite/60 to-transparent' />
                 </div>

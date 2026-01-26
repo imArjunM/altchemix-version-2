@@ -83,8 +83,9 @@ export function HeroSection() {
             variants={itemVariants}
             className='text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-6'
           >
-            Innovative <span className='gradient-text'>Color & Additive Formulations</span>{' '}
-             for Responsible Plastics
+            Innovative{' '}
+            <span className='gradient-text'>Color & Additive Formulations</span>{' '}
+            for Responsible Polymers
           </motion.h1>
 
           {/* Subheadline */}
@@ -122,16 +123,14 @@ export function HeroSection() {
               Trusted by leading manufacturers worldwide
             </p>
             <div className='flex flex-wrap items-center gap-8 opacity-60'>
-              {['ISO 9001', 'ISO 14001', 'REACH', 'RoHS', 'FDA Compliant'].map(
-                (cert) => (
-                  <span
-                    key={cert}
-                    className='text-sm font-medium text-steel tracking-wide'
-                  >
-                    {cert}
-                  </span>
-                )
-              )}
+              {['ISO 9001', 'REACH', 'RoHS', 'FDA Compliant'].map((cert) => (
+                <span
+                  key={cert}
+                  className='text-sm font-medium text-steel tracking-wide'
+                >
+                  {cert}
+                </span>
+              ))}
             </div>
           </motion.div>
         </motion.div>

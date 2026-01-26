@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Send, MapPin, Phone, Mail } from 'lucide-react';
+import { Send, MapPin, Phone, Mail, ReceiptIndianRupee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -58,7 +58,7 @@ export function ContactSection() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -101,23 +101,12 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className='font-semibold text-foreground mb-1'>
-                    Headquarters
+                    ALTCHEMIX MATERIALS LLP
                   </h4>
                   <p className='text-muted-foreground'>
-                    Innovation Park, Industrial Zone
-                    <br />
-                    Singapore 628542
+                    Plot No. PAP V-72/1/2, Wauli MIDC Chakan Phase 2 <br />
+                    Chakan Police Station, Khed, Pune
                   </p>
-                </div>
-              </div>
-
-              <div className='flex items-start gap-4'>
-                <div className='w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center flex-shrink-0'>
-                  <Phone className='w-6 h-6 text-teal' />
-                </div>
-                <div>
-                  <h4 className='font-semibold text-foreground mb-1'>Phone</h4>
-                  <p className='text-muted-foreground'>+65 6789 0123</p>
                 </div>
               </div>
 
@@ -127,7 +116,19 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className='font-semibold text-foreground mb-1'>Email</h4>
-                  <p className='text-muted-foreground'>sales@Altchemix.com</p>
+                  <p className='text-muted-foreground'>info@altchemix.com</p>
+                </div>
+              </div>
+
+              <div className='flex items-start gap-4'>
+                <div className='w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center flex-shrink-0'>
+                  <ReceiptIndianRupee className='w-6 h-6 text-teal' />
+                </div>
+                <div>
+                  <h4 className='font-semibold text-foreground mb-1'>
+                    GSTIN/UIN
+                  </h4>
+                  <p className='text-muted-foreground'>27ACKFA2023M1ZE</p>
                 </div>
               </div>
             </div>
